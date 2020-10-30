@@ -1,0 +1,68 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Edit Artist{% endblock %}
+{% block content %}
+<div class="form-wrapper">
+  <form class="form" >
+    <h3 class="form-heading">Edit artist <em>{{ artist.name }}</em> <a href="{{ url_for('index') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
+    <div class="form-group">
+      <label for="name">Name</label>
+      {{ form.name(class_ = 'form-control', autofocus = true, value=artist.name) }}
+    </div>
+    <div class="form-group">
+        <label>City & State</label>
+        <div class="form-inline">
+          <div class="form-group">
+            {{ form.city(class_ = 'form-control', placeholder='City', autofocus = true,value=artist.city) }}
+          </div>
+          <div class="form-group">
+            {% set c = form.state.process_data(artist.state) %}
+            {{ form.state(class_ = 'form-control', placeholder='State', autofocus = true, default=(artist.state,artist.state)) }}
+          </div>
+        </div>
+    </div>
+    <div class="form-group">
+      <label for="address">Address</label>
+      {{ form.address(class_ = 'form-control', autofocus = true, value= artist.address) }}
+    </div>
+    <div class="form-group">
+        <label for="phone">Phone</label>
+        {{ form.phone(class_ = 'form-control', placeholder='xxx-xxx-xxxx', autofocus = true,value=artist.phone) }}
+      </div>
+    <div class="form-group">
+      <label for="genres">Genres</label>
+      <small>Ctrl+Click to select multiple</small>
+      {% set z = form.genres.process_data(artist.genres) %}
+      {{ form.genres(class_ = 'form-control',id=form.genres, placeholder='Genres, separated by commas',multiple=true,  autofocus = true)}} 
+    </div>
+    <div class="form-group">
+      <label for="website">Website</label>
+      {{ form.website(class_ = 'form-control',value=artist.website, placeholder='http://', autofocus = true) }}
+    </div>
+    <div class="form-group">
+        <label for="facebook_link">Facebook Link</label>
+        {{ form.facebook_link(class_ = 'form-control', placeholder='http://',  autofocus = true,value=artist.facebook_link) }}
+    </div>
+    <div class="form-group">
+      <label for="image_link">Image Link</label>
+      {{ form.image_link(class_ = 'form-control', placeholder='http://', autofocus = true, value=artist.image_link) }}
+    </div>
+    <div class="form-group">
+      <label for="seeking_venue">Curruntely Seeking Performance Venue</label>
+      <input type="checkbox" name='seeking_venue' {% if artist.seeking_venue %} checked {% endif %} autofocus=true/>
+    </div>
+    <div>
+      <label for='seeking_description'>Seeking Description</label>
+      {{ form.seeking_description(class_ = 'form-control', autofocus = true,value=artist.seeking_description) }}
+    </div>
+    <div class="form-group">
+      <label for="available_from">Available from</label>
+      {{ form.available_from(class_ = 'form-control', placeholder='YYYY-MM-DD HH:MM:SS', autofocus = true, value=artist.available_from) }}
+      <label for="available_to">Available to</label>
+      {{ form.available_to(class_ = 'form-control', placeholder='YYYY-MM-DD HH:MM:SS', autofocus = true, value=artist.available_to) }}
+    </div>  
+      <input input type="submit" name='Edit' value='Edit Artist' formmethod="POST"
+    formaction="/artists/{{artist.id}}/edit" class="btn btn-primary btn-lg btn-block">
+    {{ form.csrf_token() }}
+  </form>
+</div>
+{% endblock %}
